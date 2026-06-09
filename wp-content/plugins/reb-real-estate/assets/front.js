@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (data.success) {
         const isFavorite = !!data.data.favorite;
         favoriteButton.setAttribute('aria-pressed', String(isFavorite));
-        favoriteButton.textContent = isFavorite ? 'Remove from favorites' : 'Save to favorites';
+        favoriteButton.textContent = isFavorite ? rebData.removeFavoriteText : rebData.saveFavoriteText;
       } else if (data?.data?.message) {
         window.alert(data.data.message);
       }

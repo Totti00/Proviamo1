@@ -232,6 +232,8 @@ final class REB_Real_Estate {
         wp_localize_script('reb-front', 'rebData', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('reb_favorite_nonce'),
+            'saveFavoriteText' => __('Save to favorites', 'reb-real-estate'),
+            'removeFavoriteText' => __('Remove from favorites', 'reb-real-estate'),
         ]);
 
         wp_enqueue_style('reb-leaflet', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css', [], '1.9.4');
@@ -363,8 +365,8 @@ final class REB_Real_Estate {
             'tax_query' => ['relation' => 'AND'],
         ];
 
-        $min = isset($_GET['price_min']) ? (float) wp_unslash($_GET['price_min']) : 0;
-        $max = isset($_GET['price_max']) ? (float) wp_unslash($_GET['price_max']) : 0;
+        $min = self::request_float('price_min');
+        $max = self::request_float('price_max');
 
         if ($min > 0) {
             $args['meta_query'][] = [
@@ -384,7 +386,7 @@ final class REB_Real_Estate {
             ];
         }
 
-        if (empty($_GET['include_sold'])) {
+        if (self::request_text('include_sold') === '') {
             $args['meta_query'][] = [
                 'key' => '_reb_status',
                 'value' => 'sold',
@@ -392,19 +394,21 @@ final class REB_Real_Estate {
             ];
         }
 
-        if (!empty($_GET['property_type'])) {
+        $property_type = self::request_text('property_type');
+        if ($property_type !== '') {
             $args['tax_query'][] = [
                 'taxonomy' => 'property_type',
                 'field' => 'slug',
-                'terms' => sanitize_text_field(wp_unslash($_GET['property_type'])),
+                'terms' => $property_type,
             ];
         }
 
-        if (!empty($_GET['property_location'])) {
+        $property_location = self::request_text('property_location');
+        if ($property_location !== '') {
             $args['tax_query'][] = [
                 'taxonomy' => 'property_location',
                 'field' => 'slug',
-                'terms' => sanitize_text_field(wp_unslash($_GET['property_location'])),
+                'terms' => $property_location,
             ];
         }
 
@@ -426,6 +430,14 @@ final class REB_Real_Estate {
             return false;
         }
         return in_array($post_id, array_map('intval', $favs), true);
+    }
+
+    public static function request_text(string $key): string {
+        return isset($_GET[$key]) ? sanitize_text_field(wp_unslash((string) $_GET[$key])) : '';
+    }
+
+    public static function request_float(string $key): float {
+        return (float) self::request_text($key);
     }
 
     public function toggle_favorite(): void {
@@ -481,9 +493,8 @@ final class REB_Real_Estate {
         $subject = sprintf(__('New inquiry for %s', 'reb-real-estate'), $property->post_title);
         $body = sprintf("Name: %s\nEmail: %s\n\nMessage:\n%s", $name, $email, $message);
 
-        wp_mail($to, $subject, $body);
-
-        $redirect = add_query_arg('reb_contact', 'sent', get_permalink($property_id));
+        $sent = wp_mail($to, $subject, $body);
+        $redirect = add_query_arg('reb_contact', $sent ? 'sent' : 'failed', get_permalink($property_id));
         wp_safe_redirect($redirect);
         exit;
     }
@@ -516,7 +527,15 @@ final class REB_Real_Estate {
             ],
         ];
 
-        echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>';
+        $json = wp_json_encode(
+            $schema,
+            JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
+        );
+
+        if ($json) {
+            $script = sprintf('<script type="application/ld+json">%s</script>', $json);
+            echo wp_kses($script, ['script' => ['type' => true]]);
+        }
     }
 }
 

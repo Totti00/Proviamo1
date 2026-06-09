@@ -55,8 +55,11 @@ if (have_posts()) :
                 </button>
             <?php endif; ?>
 
-            <?php if (isset($_GET['reb_contact']) && $_GET['reb_contact'] === 'sent') : ?>
+            <?php $rebContactStatus = REB_Real_Estate::request_text('reb_contact'); ?>
+            <?php if ($rebContactStatus === 'sent') : ?>
                 <p class="reb-notice success"><?php esc_html_e('Message sent successfully.', 'reb-real-estate'); ?></p>
+            <?php elseif ($rebContactStatus === 'failed') : ?>
+                <p class="reb-notice error"><?php esc_html_e('Message could not be sent. Please try again.', 'reb-real-estate'); ?></p>
             <?php endif; ?>
 
             <section class="reb-contact">
