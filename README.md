@@ -1,4 +1,4 @@
-# Proviamo1 – Real Estate Brokerage WordPress Implementation
+# Real Estate Brokerage WordPress Implementation
 
 This repository now includes a production-ready WordPress plugin at:
 
