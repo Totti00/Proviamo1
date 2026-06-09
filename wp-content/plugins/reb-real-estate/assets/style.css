@@ -1,0 +1,27 @@
+.reb-wrap,.reb-single{max-width:1100px;margin:0 auto;padding:1rem}
+.reb-filter-form{background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:1rem;margin-bottom:1rem}
+.reb-fields{display:grid;gap:.75rem;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));align-items:end}
+.reb-fields label span{display:block;font-weight:600;margin-bottom:.35rem}
+.reb-fields input,.reb-fields select,.reb-contact input,.reb-contact textarea,.reb-register-form input{width:100%;padding:.6rem;border:1px solid #ccc;border-radius:8px}
+.reb-filter-form button,.reb-contact button,.reb-register-form button,.reb-favorite-btn{background:#0a58ca;color:#fff;border:0;border-radius:8px;padding:.65rem .95rem;cursor:pointer}
+.reb-grid-listings{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem}
+.reb-card{border:1px solid #ececec;border-radius:12px;overflow:hidden;background:#fff;display:flex;flex-direction:column}
+.reb-thumb img{width:100%;height:220px;object-fit:cover;display:block}
+.reb-thumb-placeholder{height:220px;display:grid;place-items:center;background:#f5f5f5}
+.reb-card-content{padding:.85rem}
+.reb-price{font-size:1.2rem;font-weight:700;margin:.4rem 0}
+.reb-status{display:inline-block;padding:.2rem .55rem;border-radius:999px;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
+.reb-status.available{background:#e8f6ea;color:#18602b}
+.reb-status.sold{background:#fceaea;color:#992121}
+.reb-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.75rem;margin:1rem 0}
+.reb-gallery img{width:100%;height:220px;object-fit:cover;border-radius:10px}
+.reb-map{height:340px;border-radius:12px;overflow:hidden;margin:1rem 0}
+.reb-contact{margin-top:1.25rem;padding:1rem;border:1px solid #ececec;border-radius:12px}
+.reb-contact label{display:block;margin-bottom:.65rem}
+.reb-features{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.4rem 1rem;padding-left:1rem}
+.reb-notice{padding:.75rem .9rem;border-radius:8px}
+.reb-notice.success{background:#e8f6ea;color:#18602b}
+.reb-notice.error{background:#fdeaea;color:#8b1e1e}
+.reb-register-form{max-width:480px;padding:1rem;border:1px solid #ececec;border-radius:12px}
+.reb-register-form label{display:block;margin-bottom:.65rem}
+@media (max-width:640px){.reb-thumb img,.reb-gallery img{height:180px}}
